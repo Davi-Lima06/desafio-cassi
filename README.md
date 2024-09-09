@@ -15,3 +15,6 @@ desafio proposto pela cassi
 ## Rodando a aplicação
 - vá na raiz do projeto e digite: mvn spring-boot:run
 - abra a url no seu navegador: http://localhost:8080
+
+## Parando a aplicação
+- no terminal aperte Ctrl + C para parar a aplicação
