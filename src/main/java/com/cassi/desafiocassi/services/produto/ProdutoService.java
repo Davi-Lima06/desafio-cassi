@@ -34,6 +34,11 @@ public class ProdutoService {
     @Autowired
     private ProdutoMapper produtoMapper;
 
+    /**
+     * cadastra um produto no banco de dados e trata as exceções
+     * @param produtoDTO dto de request
+     * @return mensagem de sucesso
+     */
     public String cadastrarProduto(ProdutoRequestDTO produtoDTO) {
         try {
             Produto produto = produtoMapper.converterRequestDtoParaEntidade(produtoDTO);
@@ -44,6 +49,18 @@ public class ProdutoService {
         }
     }
 
+    /**
+     * recebe os datos para o filtro e paginação e manda para o banco de dados, o banco devolve
+     * uma Page de produtos que são listados e convertidos para o dto de response
+     * @param nomeProduto filtro nome
+     * @param descricao filtro descricao
+     * @param nomeCategoria filtro nome
+     * @param numeroPagina pagina atual
+     * @param tamanhoPagina tamanho da pagina
+     * @param sortBy precoBase ou dataCadastro
+     * @param direcao asc ou desc
+     * @return dto paginado response
+     */
     public ProdutoResponsePaginadoDTO listarProdutos(String nomeProduto,
                                                      String descricao,
                                                      String nomeCategoria,
@@ -73,12 +90,23 @@ public class ProdutoService {
                 .build();
     }
 
+    /**
+     * lista um produto do banco de dados pelo id do produto
+     * @param idProduto id do produto
+     * @return dto de response
+     */
     public ProdutoResponseDTO listarProdutoPorId(Long idProduto) {
         ProdutoResponseDTO produtoResponseDTO = produtoMapper
                 .converterEntidadeParaResponseDto(buscarProdutoPorId(idProduto));
         return produtoResponseDTO;
     }
 
+    /**
+     * atualiza os dados de um produto no banco de dados
+     * @param idProduto id do produto
+     * @param produtoRequestDTO dto request
+     * @return mensagem de sucesso
+     */
     public String atualizarProdutoPorId(Long idProduto, ProdutoRequestDTO produtoRequestDTO) {
         Produto produto = buscarProdutoPorId(idProduto);
 
@@ -91,6 +119,11 @@ public class ProdutoService {
         }
     }
 
+    /**
+     * exclui um produto do banco de dados pelo id do produto
+     * @param idProduto  id do produto
+     * @return mensagem de sucesso
+     */
     public String excluirProdutoPorId(Long idProduto) {
         Produto produto = buscarProdutoPorId(idProduto);
 
@@ -102,6 +135,12 @@ public class ProdutoService {
         }
     }
 
+    /**
+     * Calcula o preço final de um produto com base em seu ID, considerando descontos ou taxas da categoria.
+     *
+     * @param idProduto id do produto
+     * @return dto de Response
+     */
     public ProdutoPrecoFinalResponseDTO calcularPrecoFinal(Long idProduto) {
             Produto produto = buscarProdutoPorId(idProduto);
             BigDecimal precoBase = produto.getPrecoBase();
@@ -120,6 +159,11 @@ public class ProdutoService {
         return produtoMapper.converterEntidadeParaPrecoFinalResponseDto(produto, precoFinal);
     }
 
+    /**
+     * lista produto do banco de dados por id do produto
+     * @param idProduto nome da categoria
+     * @return entidade produto
+     */
     private Produto buscarProdutoPorId(Long idProduto) {
         Produto produto = produtoRepository.findById(idProduto).orElse(null);
         if (produto == null) {

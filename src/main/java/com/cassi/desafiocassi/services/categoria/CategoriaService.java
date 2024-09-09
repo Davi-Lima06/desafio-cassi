@@ -28,6 +28,11 @@ public class CategoriaService {
     @Autowired
     private CategoriaMapper categoriaMapper;
 
+    /**
+     * cadastra uma categoria no banco de dados e trata as exceções
+     * @param categoriaRequestDto dto de request
+     * @return mensagem de sucesso
+     */
     public String cadastrarCategoria(CategoriaRequestDTO categoriaRequestDto) {
         validarDuplicidadeCategoria(categoriaRequestDto.getNomeCategoria());
         validarDescontoOuTaxa(categoriaRequestDto);
@@ -41,6 +46,11 @@ public class CategoriaService {
         }
     }
 
+    /**
+     * lista todas as categorias do banco, e faz a validação caso não exista
+     * categorias cadastradas
+     * @return lista de dto response
+     */
     public List<CategoriaResponseDTO> listarCategorias() {
 
         List<Categoria> listaCategorias =  categoriaRepository.findAll();
@@ -52,12 +62,23 @@ public class CategoriaService {
                 .converterListaCategoriasEntidadeParaListaCategoriasDto(listaCategorias);
     }
 
+    /**
+     * lista categoria do banco de dados por nome da categoria
+     * @param nomeCategoria nome da categoria
+     * @return dto response
+     */
     public CategoriaResponseDTO listarCategoriaPorNomeCategoria(String nomeCategoria) {
         CategoriaResponseDTO categoriaResponseDTO = categoriaMapper
                 .converterEntidadeParaResponseDto(buscarCategoriaPorNome(nomeCategoria));
         return categoriaResponseDTO;
     }
 
+    /**
+     * atualiza uma categoria no banco de dados e faz a validação caso seja dados repetidos
+     * @param nomeCategoria nome da categoria
+     * @param categoriaRequestDto dto response
+     * @return mensagem de sucesso
+     */
     public String atualizarCategoriaPorNomeCategoria(String nomeCategoria, CategoriaRequestDTO categoriaRequestDto) {
         Categoria categoria = buscarCategoriaPorNome(nomeCategoria);
 
@@ -72,6 +93,11 @@ public class CategoriaService {
         }
     }
 
+    /**
+     * exclui uma categoria no banco de dados recebendo o nome da categoria como parametro e trata as exceções
+     * @param nomeCategoria bone da categoria
+     * @return mensagem de sucesso
+     */
     public String excluirCategoriaPorNomeCategoria(String nomeCategoria) {
         Categoria categoria = buscarCategoriaPorNome(nomeCategoria);
         try {
@@ -82,6 +108,10 @@ public class CategoriaService {
         }
     }
 
+    /**
+     * valida se o nome recebido existe cadastrado no banco de dados
+     * @param nomeCategoria nome da categoria
+     */
     private void validarDuplicidadeCategoria(String nomeCategoria) {
         Optional<Categoria> categoria = categoriaRepository.findByNomeCategoria(nomeCategoria);
         if (categoria.isPresent()) {
@@ -89,6 +119,10 @@ public class CategoriaService {
         }
     }
 
+    /**
+     * valida se os campos de desconto e taxa foram preenchidos, caso forem o sistema lança um erro
+     * @param categoriaRequestDto
+     */
     private void validarDescontoOuTaxa(CategoriaRequestDTO categoriaRequestDto) {
         if (categoriaRequestDto.getDesconto().compareTo(BigDecimal.ZERO) != 0 &&
                 categoriaRequestDto.getTaxa().compareTo(BigDecimal.ZERO) != 0) {
@@ -97,7 +131,11 @@ public class CategoriaService {
     }
 
 
-
+    /**
+     * busca uma categoria no banco de dados por nome da categoria
+     * @param nomeCategoria nome da categoria
+     * @return categoria
+     */
     private Categoria buscarCategoriaPorNome(String nomeCategoria) {
         Categoria categoria =  categoriaRepository.findByNomeCategoria(nomeCategoria).orElse(null);
         if (categoria == null) {

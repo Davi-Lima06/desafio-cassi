@@ -25,6 +25,11 @@ public class ProdutoMapper {
     @Autowired
     private CategoriaRepository categoriaRepository;
 
+    /**
+     * mapper que converte um ProdutoRequestDTO para uma entidade.
+     * @param produtoDTO dto
+     * @return entidade produto
+     */
     public Produto converterRequestDtoParaEntidade(ProdutoRequestDTO produtoDTO) {
 
         return Produto.builder()
@@ -36,6 +41,11 @@ public class ProdutoMapper {
                 .build();
     }
 
+    /**
+     * mapper que converte entidade produto para o
+     * @param produto entidade produto
+     * @return dto
+     */
     public ProdutoResponseDTO converterEntidadeParaResponseDto(Produto produto) {
 
         return ProdutoResponseDTO.builder()
@@ -48,6 +58,12 @@ public class ProdutoMapper {
                 .build();
     }
 
+    /**
+     * mapper que converte entidade produto pra dto e atualiza o valor final
+     * @param produto entidade produto
+     * @param valorFinal valor final calculado
+     * @return ProdutoPrecoFinalResponseDTO
+     */
     public ProdutoPrecoFinalResponseDTO converterEntidadeParaPrecoFinalResponseDto(Produto produto, BigDecimal valorFinal) {
 
         return ProdutoPrecoFinalResponseDTO.builder()
@@ -60,15 +76,13 @@ public class ProdutoMapper {
                 .build();
     }
 
-    public List<ProdutoResponseDTO> converterListaEntidadeParaResponseDto(List<Produto> listaProdutosEntidade) {
-        List<ProdutoResponseDTO> listaRetorno = new ArrayList<>();
-        for (Produto produto : listaProdutosEntidade) {
-            listaRetorno.add(converterEntidadeParaResponseDto(produto));
-        }
-
-        return listaRetorno;
-    }
-
+    /**
+     * verifica se os campos do produtoRequestDTO são nulos, se não forem
+     * atualiza o valor na entidade produto
+     * @param produto entidade produto a ser atualizada
+     * @param produtoRequestDTO dto de request
+     * @return entidade produto
+     */
     public Produto atualizarProduto(Produto produto, ProdutoRequestDTO produtoRequestDTO) {
         if (produtoRequestDTO.getDescricaoProduto() != null) {
             produto.setDescricaoProduto(produtoRequestDTO.getDescricaoProduto());
@@ -87,6 +101,11 @@ public class ProdutoMapper {
         return produto;
     }
 
+    /**
+     * busca uma categoria no banco de dados por nome da categoria
+     * @param nomeCategoria nome da categoria
+     * @return categoria
+     */
     private Categoria buscarCategoria(String nomeCategoria) {
         Optional<Categoria> categoria = categoriaRepository.findByNomeCategoria(nomeCategoria);
         return categoria.orElseThrow(() -> new ObjectNotFoundException(CATEGORIA_NAO_ENCONTRADA.getMensagem()));
