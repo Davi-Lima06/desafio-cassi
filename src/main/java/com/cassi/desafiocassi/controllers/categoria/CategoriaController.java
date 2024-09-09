@@ -16,7 +16,7 @@ import java.util.List;
 import static com.cassi.desafiocassi.enums.categoria.CategoriaMensagensEnum.CADASTRO_CATEGORIA;
 
 @RestController
-@RequestMapping("categoria")
+@RequestMapping("categorias")
 public class CategoriaController {
 
     @Autowired
