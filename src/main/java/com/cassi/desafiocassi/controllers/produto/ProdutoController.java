@@ -1,5 +1,6 @@
 package com.cassi.desafiocassi.controllers.produto;
 
+import com.cassi.desafiocassi.dto.produto.ProdutoPrecoFinalResponseDTO;
 import com.cassi.desafiocassi.dto.produto.ProdutoRequestDTO;
 import com.cassi.desafiocassi.dto.produto.ProdutoResponseDTO;
 import com.cassi.desafiocassi.dto.produto.ProdutoResponsePaginadoDTO;
@@ -57,7 +58,7 @@ public class ProdutoController {
     @GetMapping("/{idProduto}/preco-final")
     @Operation(summary = "Listar um produto.",
             description = "endpoint responsável por listar um produto por id do produto.")
-    public ResponseEntity<ProdutoResponseDTO> calcularPrecoFinal(
+    public ResponseEntity<ProdutoPrecoFinalResponseDTO> calcularPrecoFinal(
             @PathVariable("idProduto") Long idProduto) {
         return ResponseEntity.ok().body(produtoService.calcularPrecoFinal(idProduto));
     }

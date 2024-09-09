@@ -1,6 +1,7 @@
 package com.cassi.desafiocassi.mappers.produto;
 
 import com.cassi.desafiocassi.configuration.exceptions.ObjectNotFoundException;
+import com.cassi.desafiocassi.dto.produto.ProdutoPrecoFinalResponseDTO;
 import com.cassi.desafiocassi.dto.produto.ProdutoRequestDTO;
 import com.cassi.desafiocassi.dto.produto.ProdutoResponseDTO;
 import com.cassi.desafiocassi.h2.entity.Categoria;
@@ -10,6 +11,7 @@ import com.cassi.desafiocassi.util.MetodosUteis;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +43,18 @@ public class ProdutoMapper {
                 .nomeProduto(produto.getNomeProduto())
                 .descricaoProduto(produto.getDescricaoProduto())
                 .precoBase(MetodosUteis.formatarPreco(produto.getPrecoBase()))
+                .nomeCategoria(produto.getCategoria().getNomeCategoria())
+                .dataCadastro(MetodosUteis.formatarData(produto.getDataCadastro()))
+                .build();
+    }
+
+    public ProdutoPrecoFinalResponseDTO converterEntidadeParaPrecoFinalResponseDto(Produto produto, BigDecimal valorFinal) {
+
+        return ProdutoPrecoFinalResponseDTO.builder()
+                .idProduto(produto.getIdProduto())
+                .nomeProduto(produto.getNomeProduto())
+                .descricaoProduto(produto.getDescricaoProduto())
+                .precoFinal(MetodosUteis.formatarPreco(valorFinal))
                 .nomeCategoria(produto.getCategoria().getNomeCategoria())
                 .dataCadastro(MetodosUteis.formatarData(produto.getDataCadastro()))
                 .build();

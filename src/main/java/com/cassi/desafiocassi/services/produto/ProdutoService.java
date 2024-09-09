@@ -2,6 +2,7 @@ package com.cassi.desafiocassi.services.produto;
 
 import com.cassi.desafiocassi.configuration.exceptions.DataIntegrityException;
 import com.cassi.desafiocassi.configuration.exceptions.ObjectNotFoundException;
+import com.cassi.desafiocassi.dto.produto.ProdutoPrecoFinalResponseDTO;
 import com.cassi.desafiocassi.dto.produto.ProdutoRequestDTO;
 import com.cassi.desafiocassi.dto.produto.ProdutoResponseDTO;
 import com.cassi.desafiocassi.dto.produto.ProdutoResponsePaginadoDTO;
@@ -97,26 +98,26 @@ public class ProdutoService {
             produtoRepository.delete(produto);
             return EXCLUSAO_PRODUTO.getMensagem();
         } catch (Exception ex) {
-            throw new ObjectNotFoundException(ERRO_EXCLUSAO_PRODUTO.getMensagem());
+            throw new DataIntegrityException(ERRO_EXCLUSAO_PRODUTO.getMensagem());
         }
     }
 
-    public ProdutoResponseDTO calcularPrecoFinal(Long idProduto) {
-        Produto produto = buscarProdutoPorId(idProduto);
-        BigDecimal precoBase = produto.getPrecoBase();
-        BigDecimal ajustePreco = BigDecimal.ZERO;
+    public ProdutoPrecoFinalResponseDTO calcularPrecoFinal(Long idProduto) {
+            Produto produto = buscarProdutoPorId(idProduto);
+            BigDecimal precoBase = produto.getPrecoBase();
+            BigDecimal ajustePreco = BigDecimal.ZERO;
 
 
-        if (produto.getCategoria().getDesconto().compareTo(BigDecimal.ZERO) != 0) {
-            ajustePreco = produto.getCategoria().getDesconto().negate();
-        } else if (produto.getCategoria().getTaxa().compareTo(BigDecimal.ZERO) != 0) {
-            ajustePreco = produto.getCategoria().getTaxa();
-        }
+            if (produto.getCategoria().getDesconto().compareTo(BigDecimal.ZERO) != 0) {
+                ajustePreco = produto.getCategoria().getDesconto().negate();
+            } else if (produto.getCategoria().getTaxa().compareTo(BigDecimal.ZERO) != 0) {
+                ajustePreco = produto.getCategoria().getTaxa();
+            }
 
-        BigDecimal fator = BigDecimal.ONE.add(ajustePreco.divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP));
+            BigDecimal fator = BigDecimal.ONE.add(ajustePreco.divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP));
 
-        produto.setPrecoBase(precoBase.multiply(fator).setScale(2, RoundingMode.HALF_UP));
-        return produtoMapper.converterEntidadeParaResponseDto(produto);
+            BigDecimal precoFinal = precoBase.multiply(fator).setScale(2, RoundingMode.HALF_UP);
+        return produtoMapper.converterEntidadeParaPrecoFinalResponseDto(produto, precoFinal);
     }
 
     private Produto buscarProdutoPorId(Long idProduto) {
