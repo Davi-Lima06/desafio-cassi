@@ -12,6 +12,10 @@ public class FormularioErroGenerico extends ErroGenerico {
 
     private String campo;
 
+    /**
+     * construtor de FormularioErroGenerico que recebe um erro de campo;
+     * @param fieldError erro de campo
+     */
     public FormularioErroGenerico(FieldError fieldError) {
         super(fieldError.getDefaultMessage());
         this.campo = fieldError.getField();;

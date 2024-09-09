@@ -13,6 +13,11 @@ import java.util.List;
 @Component
 public class CategoriaMapper {
 
+    /**
+     * Converte um objeto de transferência de dados (DTO) de categoria para uma entidade de categoria.
+     * @param categoriaRequestDTO objeto CategoriaRequestDTO
+     * @return retorna uma categoria
+     */
     public Categoria converterDtoParaEntidade(CategoriaRequestDTO categoriaRequestDTO) {
         return Categoria.builder()
                 .descricaoCategoria(categoriaRequestDTO.getDescricaoCategoria())
@@ -22,15 +27,11 @@ public class CategoriaMapper {
                 .build();
     }
 
-    public CategoriaRequestDTO converterEntidadeParaDto(Categoria categoria) {
-        return CategoriaRequestDTO.builder()
-                .descricaoCategoria(categoria.getDescricaoCategoria())
-                .nomeCategoria(categoria.getNomeCategoria())
-                .taxa(categoria.getTaxa())
-                .desconto(categoria.getDesconto())
-                .build();
-    }
-
+    /**
+     * Converte uma entidade de categoria para um objeto de transferência de dados (DTO)
+     * @param categoria categoria
+     * @return CategoriaResponseDTO
+     */
     public CategoriaResponseDTO converterEntidadeParaResponseDto(Categoria categoria) {
         return CategoriaResponseDTO.builder()
                 .descricaoCategoria(categoria.getDescricaoCategoria())
@@ -40,6 +41,11 @@ public class CategoriaMapper {
                 .build();
     }
 
+    /**
+     * Converte uma lista entidade de categoria para uma lista de transferência de dados (DTO)
+     * @param categorias lista de categorias
+     * @return lista de CategoriaResponseDTO
+     */
     public List<CategoriaResponseDTO> converterListaCategoriasEntidadeParaListaCategoriasDto(List<Categoria> categorias) {
         List<CategoriaResponseDTO> listaCategoriaCadastroDto = new ArrayList<>();
         for (Categoria categoria: categorias) {
@@ -49,6 +55,13 @@ public class CategoriaMapper {
         return listaCategoriaCadastroDto;
     }
 
+    /**
+     * verifica se os campos categoriaRequestDTO são nulos, caso não sejam nulos, seta o valor no
+     * objeto categoria.
+     * @param categoria categoria a ser atualizada
+     * @param categoriaRequestDTO categoriaRequest
+     * @return Categoria
+     */
     public Categoria atualizarCategoriaMapper(Categoria categoria, CategoriaRequestDTO categoriaRequestDTO) {
         if (categoriaRequestDTO.getNomeCategoria() != null) {
             categoria.setNomeCategoria(categoriaRequestDTO.getNomeCategoria());

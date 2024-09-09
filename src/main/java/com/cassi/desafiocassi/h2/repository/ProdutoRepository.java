@@ -10,6 +10,15 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
+
+    /**
+     * query de listagem pagina e filtro, recebe vários parametros.
+     * @param nome nome
+     * @param descricao descricao
+     * @param nomeCategoria nome da categoria
+     * @param pageable pageable
+     * @return retorna uma Page<Produto>
+     */
     @Query("SELECT p FROM Produto p " +
             "WHERE (:nome IS NULL OR LOWER(p.nomeProduto) LIKE LOWER(CONCAT('%', :nome, '%'))) " +
             "AND (:descricao IS NULL OR LOWER(p.descricaoProduto) LIKE LOWER(CONCAT('%', :descricao, '%'))) " +
