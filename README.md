@@ -23,6 +23,11 @@
 - será gerado um arquivo no caminho: target/site/apidocs/index.html
 - abra esse arquivo no seu navegador
 
+## OBSERVAÇÃO
+- ao realizar os testes execute somente o pacote: testcontroller
+- quando roda o pacote teste por exemplo dá erro de contexto
+- não tive tempo pra arrumar isso então tive que deixar assim
+
 ## Descrição
 
 O desafio consiste em implementar uma API REST em Java para um sistema de cadastro de produtos. A API permitirá a criação, atualização, leitura e exclusão de produtos, além de aplicar uma lógica de cálculo sobre o preço final do produto com base em certas regras.
