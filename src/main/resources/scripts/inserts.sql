@@ -1,8 +1,8 @@
 
 INSERT INTO categoria (nome_categoria, descricao_categoria, taxa, desconto)
-VALUES ('Eletrônicos', 'Produtos eletrônicos', 20, 0),
+VALUES ('Eletrônicos', 'Produtos eletrônicos', 10, 0),
        ('Alimentos', 'Produtos alimentícios', 5, 0),
-       ('Vestuário', 'Roupas e acessórios', 0, 10);
+       ('Vestuário', 'Roupas e acessórios', 0, 5);
 
 INSERT INTO produto (nome_produto, descricao_produto, preco_base, data_cadastro, categoria_id)
 VALUES ('Smartphone', 'Smartphone com 64GB de armazenamento', 299.99, CURRENT_DATE, 1),
