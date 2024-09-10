@@ -18,3 +18,8 @@ desafio proposto pela cassi
 
 ## Parando a aplicação
 - no terminal aperte Ctrl + C para parar a aplicação
+
+## Documentação javadoc
+- vá até a raiz do projeto e digite o comando: mvn javadoc:javadoc , obs: vai dar alguns erros mas vai gerar o arquivo mesmo assim.
+- será gerado um arquivo no caminho: target/site/apidocs/index.html
+- abra esse arquivo no seu navegador
