@@ -62,7 +62,7 @@ public class ProdutoResourceTest {
                 .when()
                 .post("/produtos")
                 .then()
-                .statusCode(HttpStatus.OK.value())
+                .statusCode(HttpStatus.CREATED.value())
                 .body(equalTo("Produto cadastrado com sucesso!"));
     }
 

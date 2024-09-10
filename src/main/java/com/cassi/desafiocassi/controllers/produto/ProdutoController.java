@@ -1,6 +1,7 @@
 package com.cassi.desafiocassi.controllers.produto;
 
 import com.cassi.desafiocassi.dto.produto.*;
+import com.cassi.desafiocassi.enums.produto.ProdutoMensagemEnum;
 import com.cassi.desafiocassi.h2.repository.ProdutoRepository;
 import com.cassi.desafiocassi.services.produto.ProdutoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -8,6 +9,9 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("produtos")
@@ -23,8 +27,10 @@ public class ProdutoController {
     @Operation(summary = "Cadastro de produtos.",
             description = "endpoint responsável pelo cadastro de produtos no banco de dados.")
     public ResponseEntity<String> cadastrarProduto(@Valid @RequestBody ProdutoCadastroRequestDTO produtoDTO) {
-
-        return ResponseEntity.ok().body(produtoService.cadastrarProduto(produtoDTO));
+        Long idProduto = produtoService.cadastrarProduto(produtoDTO);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{idProduto}").buildAndExpand(idProduto).toUri();
+        return ResponseEntity.created(uri).body(ProdutoMensagemEnum.CADASTRO_PRODUTO.getMensagem());
     }
 
     @GetMapping("/{idProduto}")

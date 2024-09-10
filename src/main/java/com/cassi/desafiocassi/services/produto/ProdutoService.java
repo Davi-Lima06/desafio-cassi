@@ -36,11 +36,11 @@ public class ProdutoService {
      * @param produtoDTO dto de request
      * @return mensagem de sucesso
      */
-    public String cadastrarProduto(ProdutoCadastroRequestDTO produtoDTO) {
+    public Long cadastrarProduto(ProdutoCadastroRequestDTO produtoDTO) {
         Produto produto = produtoMapper.converterRequestDtoParaEntidade(produtoDTO);
         try {
-            produtoRepository.save(produto);
-            return CADASTRO_PRODUTO.getMensagem();
+            Produto produtoCadastrado = produtoRepository.save(produto);
+            return produtoCadastrado.getIdProduto();
         } catch (Exception ex) {
             throw new DataIntegrityException(ERRO_CADASTRAR_PRODUTO.getMensagem());
         }
