@@ -1,6 +1,7 @@
 package com.cassi.desafiocassi.controllers.categoria;
 
-import com.cassi.desafiocassi.dto.categoria.CategoriaRequestDTO;
+import com.cassi.desafiocassi.dto.categoria.CategoriaAtualizacaoRequestDTO;
+import com.cassi.desafiocassi.dto.categoria.CategoriaCadastroRequestDTO;
 import com.cassi.desafiocassi.dto.categoria.CategoriaResponseDTO;
 import com.cassi.desafiocassi.services.categoria.CategoriaService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,9 +27,9 @@ public class CategoriaController {
     @Operation(summary = "Cadastro de categorias.",
             description = "endpoint responsável pelo cadastro de categorias no banco de dados.")
     public ResponseEntity<String> cadastrarCategoria(
-            @Valid @RequestBody CategoriaRequestDTO categoriaRequestDTO) {
+            @Valid @RequestBody CategoriaCadastroRequestDTO categoriaCadastroRequestDTO) {
 
-        String nomeCategoria = categoriaService.cadastrarCategoria(categoriaRequestDTO);
+        String nomeCategoria = categoriaService.cadastrarCategoria(categoriaCadastroRequestDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{nomeCategoria}").buildAndExpand(nomeCategoria).toUri();
 
@@ -55,7 +56,7 @@ public class CategoriaController {
     @Operation(summary = "Atualizar uma categoria.",
             description = "endpoint responsável por atualizar uma categoria por nome da categoria.")
     public ResponseEntity<String> atualizarCategoriaPorNomeCategoria(
-            @Valid @RequestBody CategoriaRequestDTO categoriaRequestDTO,
+            @Valid @RequestBody CategoriaAtualizacaoRequestDTO categoriaRequestDTO,
             @PathVariable("nomeCategoria") String nomeCategoria) {
         return  ResponseEntity.ok().body(categoriaService.atualizarCategoriaPorNomeCategoria(nomeCategoria, categoriaRequestDTO));
     }

@@ -1,8 +1,9 @@
 package com.cassi.desafiocassi.mappers.produto;
 
 import com.cassi.desafiocassi.configuration.exceptions.ObjectNotFoundException;
+import com.cassi.desafiocassi.dto.produto.ProdutoAtualizacaoRequestDTO;
 import com.cassi.desafiocassi.dto.produto.ProdutoPrecoFinalResponseDTO;
-import com.cassi.desafiocassi.dto.produto.ProdutoRequestDTO;
+import com.cassi.desafiocassi.dto.produto.ProdutoCadastroRequestDTO;
 import com.cassi.desafiocassi.dto.produto.ProdutoResponseDTO;
 import com.cassi.desafiocassi.h2.entity.Categoria;
 import com.cassi.desafiocassi.h2.entity.Produto;
@@ -13,8 +14,6 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static com.cassi.desafiocassi.enums.categoria.CategoriaMensagensEnum.CATEGORIA_NAO_ENCONTRADA;
@@ -30,7 +29,7 @@ public class ProdutoMapper {
      * @param produtoDTO dto
      * @return entidade produto
      */
-    public Produto converterRequestDtoParaEntidade(ProdutoRequestDTO produtoDTO) {
+    public Produto converterRequestDtoParaEntidade(ProdutoCadastroRequestDTO produtoDTO) {
 
         return Produto.builder()
                 .nomeProduto(produtoDTO.getNomeProduto())
@@ -80,21 +79,21 @@ public class ProdutoMapper {
      * verifica se os campos do produtoRequestDTO são nulos, se não forem
      * atualiza o valor na entidade produto
      * @param produto entidade produto a ser atualizada
-     * @param produtoRequestDTO dto de request
+     * @param produtoAtualizacaoRequestDTO dto de request
      * @return entidade produto
      */
-    public Produto atualizarProduto(Produto produto, ProdutoRequestDTO produtoRequestDTO) {
-        if (produtoRequestDTO.getDescricaoProduto() != null) {
-            produto.setDescricaoProduto(produtoRequestDTO.getDescricaoProduto());
+    public Produto atualizarProduto(Produto produto, ProdutoAtualizacaoRequestDTO produtoAtualizacaoRequestDTO) {
+        if (produtoAtualizacaoRequestDTO.getDescricaoProduto() != null) {
+            produto.setDescricaoProduto(produtoAtualizacaoRequestDTO.getDescricaoProduto());
         }
-        if (produtoRequestDTO.getNomeProduto() != null) {
-            produto.setNomeProduto(produtoRequestDTO.getNomeProduto());
+        if (produtoAtualizacaoRequestDTO.getNomeProduto() != null) {
+            produto.setNomeProduto(produtoAtualizacaoRequestDTO.getNomeProduto());
         }
-        if (produtoRequestDTO.getPrecoBase() != null) {
-            produto.setPrecoBase(produtoRequestDTO.getPrecoBase());
+        if (produtoAtualizacaoRequestDTO.getPrecoBase() != null) {
+            produto.setPrecoBase(produtoAtualizacaoRequestDTO.getPrecoBase());
         }
-        if (produtoRequestDTO.getNomeCategoria() != null) {
-            Categoria categoria = buscarCategoria(produtoRequestDTO.getNomeCategoria());
+        if (produtoAtualizacaoRequestDTO.getNomeCategoria() != null) {
+            Categoria categoria = buscarCategoria(produtoAtualizacaoRequestDTO.getNomeCategoria());
             produto.setCategoria(categoria);
         }
 

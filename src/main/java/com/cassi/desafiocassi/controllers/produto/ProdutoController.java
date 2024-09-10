@@ -1,9 +1,6 @@
 package com.cassi.desafiocassi.controllers.produto;
 
-import com.cassi.desafiocassi.dto.produto.ProdutoPrecoFinalResponseDTO;
-import com.cassi.desafiocassi.dto.produto.ProdutoRequestDTO;
-import com.cassi.desafiocassi.dto.produto.ProdutoResponseDTO;
-import com.cassi.desafiocassi.dto.produto.ProdutoResponsePaginadoDTO;
+import com.cassi.desafiocassi.dto.produto.*;
 import com.cassi.desafiocassi.h2.repository.ProdutoRepository;
 import com.cassi.desafiocassi.services.produto.ProdutoService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,7 +22,7 @@ public class ProdutoController {
     @PostMapping
     @Operation(summary = "Cadastro de produtos.",
             description = "endpoint responsável pelo cadastro de produtos no banco de dados.")
-    public ResponseEntity<String> cadastrarProduto(@Valid @RequestBody ProdutoRequestDTO produtoDTO) {
+    public ResponseEntity<String> cadastrarProduto(@Valid @RequestBody ProdutoCadastroRequestDTO produtoDTO) {
 
         return ResponseEntity.ok().body(produtoService.cadastrarProduto(produtoDTO));
     }
@@ -42,9 +39,9 @@ public class ProdutoController {
     @Operation(summary = "Atualizar um produto.",
             description = "endpoint responsável por atualizar um produto por id do produto.")
     public ResponseEntity<String> atualizarProdutoPorIdProduto(
-            @Valid @RequestBody ProdutoRequestDTO produtoRequestDTO,
+            @Valid @RequestBody ProdutoAtualizacaoRequestDTO produtoAtualizacaoRequestDTO,
             @PathVariable("idProduto") Long idProduto) {
-        return  ResponseEntity.ok().body(produtoService.atualizarProdutoPorId(idProduto, produtoRequestDTO));
+        return  ResponseEntity.ok().body(produtoService.atualizarProdutoPorId(idProduto, produtoAtualizacaoRequestDTO));
     }
 
     @DeleteMapping("/{idProduto}")

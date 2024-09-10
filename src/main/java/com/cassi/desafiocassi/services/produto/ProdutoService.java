@@ -2,10 +2,7 @@ package com.cassi.desafiocassi.services.produto;
 
 import com.cassi.desafiocassi.configuration.exceptions.DataIntegrityException;
 import com.cassi.desafiocassi.configuration.exceptions.ObjectNotFoundException;
-import com.cassi.desafiocassi.dto.produto.ProdutoPrecoFinalResponseDTO;
-import com.cassi.desafiocassi.dto.produto.ProdutoRequestDTO;
-import com.cassi.desafiocassi.dto.produto.ProdutoResponseDTO;
-import com.cassi.desafiocassi.dto.produto.ProdutoResponsePaginadoDTO;
+import com.cassi.desafiocassi.dto.produto.*;
 import com.cassi.desafiocassi.h2.entity.Produto;
 import com.cassi.desafiocassi.h2.repository.ProdutoRepository;
 import com.cassi.desafiocassi.mappers.produto.ProdutoMapper;
@@ -39,9 +36,9 @@ public class ProdutoService {
      * @param produtoDTO dto de request
      * @return mensagem de sucesso
      */
-    public String cadastrarProduto(ProdutoRequestDTO produtoDTO) {
+    public String cadastrarProduto(ProdutoCadastroRequestDTO produtoDTO) {
+        Produto produto = produtoMapper.converterRequestDtoParaEntidade(produtoDTO);
         try {
-            Produto produto = produtoMapper.converterRequestDtoParaEntidade(produtoDTO);
             produtoRepository.save(produto);
             return CADASTRO_PRODUTO.getMensagem();
         } catch (Exception ex) {
@@ -104,14 +101,13 @@ public class ProdutoService {
     /**
      * atualiza os dados de um produto no banco de dados
      * @param idProduto id do produto
-     * @param produtoRequestDTO dto request
+     * @param produtoAtualizacaoRequestDTO dto request
      * @return mensagem de sucesso
      */
-    public String atualizarProdutoPorId(Long idProduto, ProdutoRequestDTO produtoRequestDTO) {
+    public String atualizarProdutoPorId(Long idProduto, ProdutoAtualizacaoRequestDTO produtoAtualizacaoRequestDTO) {
         Produto produto = buscarProdutoPorId(idProduto);
-
+        Produto produtoAtualizado = produtoMapper.atualizarProduto(produto, produtoAtualizacaoRequestDTO);
         try {
-            Produto produtoAtualizado = produtoMapper.atualizarProduto(produto, produtoRequestDTO);
             produtoRepository.save(produtoAtualizado);
             return ATUALIZACAO_PRODUTO.getMensagem();
         } catch (Exception ex) {

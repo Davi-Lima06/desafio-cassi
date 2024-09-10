@@ -1,6 +1,7 @@
 package com.cassi.desafiocassi.mappers.categoria;
 
-import com.cassi.desafiocassi.dto.categoria.CategoriaRequestDTO;
+import com.cassi.desafiocassi.dto.categoria.CategoriaAtualizacaoRequestDTO;
+import com.cassi.desafiocassi.dto.categoria.CategoriaCadastroRequestDTO;
 import com.cassi.desafiocassi.dto.categoria.CategoriaResponseDTO;
 import com.cassi.desafiocassi.h2.entity.Categoria;
 import com.cassi.desafiocassi.util.MetodosUteis;
@@ -15,15 +16,15 @@ public class CategoriaMapper {
 
     /**
      * Converte um objeto de transferência de dados (DTO) de categoria para uma entidade de categoria.
-     * @param categoriaRequestDTO objeto CategoriaRequestDTO
+     * @param categoriaCadastroRequestDTO objeto CategoriaRequestDTO
      * @return retorna uma categoria
      */
-    public Categoria converterDtoParaEntidade(CategoriaRequestDTO categoriaRequestDTO) {
+    public Categoria converterDtoParaEntidade(CategoriaCadastroRequestDTO categoriaCadastroRequestDTO) {
         return Categoria.builder()
-                .descricaoCategoria(categoriaRequestDTO.getDescricaoCategoria())
-                .nomeCategoria(categoriaRequestDTO.getNomeCategoria())
-                .taxa(categoriaRequestDTO.getTaxa())
-                .desconto(categoriaRequestDTO.getDesconto())
+                .descricaoCategoria(categoriaCadastroRequestDTO.getDescricaoCategoria())
+                .nomeCategoria(categoriaCadastroRequestDTO.getNomeCategoria())
+                .taxa(categoriaCadastroRequestDTO.getTaxa())
+                .desconto(categoriaCadastroRequestDTO.getDesconto())
                 .build();
     }
 
@@ -62,18 +63,20 @@ public class CategoriaMapper {
      * @param categoriaRequestDTO categoriaRequest
      * @return Categoria
      */
-    public Categoria atualizarCategoriaMapper(Categoria categoria, CategoriaRequestDTO categoriaRequestDTO) {
+    public Categoria atualizarCategoriaMapper(Categoria categoria, CategoriaAtualizacaoRequestDTO categoriaRequestDTO) {
         if (categoriaRequestDTO.getNomeCategoria() != null) {
             categoria.setNomeCategoria(categoriaRequestDTO.getNomeCategoria());
         }
         if (categoriaRequestDTO.getDescricaoCategoria() != null) {
             categoria.setDescricaoCategoria(categoriaRequestDTO.getDescricaoCategoria());
         }
-        if (categoriaRequestDTO.getTaxa().compareTo(BigDecimal.ZERO) != 0) {
+        if (categoriaRequestDTO.getTaxa() != null && categoriaRequestDTO.getTaxa().compareTo(BigDecimal.ZERO) != 0) {
             categoria.setTaxa(categoriaRequestDTO.getTaxa());
+            categoria.setDesconto(new BigDecimal(0));
         }
-        if (categoriaRequestDTO.getDesconto().compareTo(BigDecimal.ZERO) != 0) {
+        if (categoriaRequestDTO.getDesconto() != null && categoriaRequestDTO.getDesconto().compareTo(BigDecimal.ZERO) != 0) {
             categoria.setDesconto(categoriaRequestDTO.getDesconto());
+            categoria.setTaxa(new BigDecimal(0));
         }
 
         return categoria;

@@ -1,10 +1,7 @@
-package com.cassi.desafiocassi.resouces;
+package com.cassi.desafiocassi.testcontroller;
 
 import com.cassi.desafiocassi.configuration.exceptions.DataIntegrityException;
-import com.cassi.desafiocassi.dto.produto.ProdutoPrecoFinalResponseDTO;
-import com.cassi.desafiocassi.dto.produto.ProdutoRequestDTO;
-import com.cassi.desafiocassi.dto.produto.ProdutoResponseDTO;
-import com.cassi.desafiocassi.dto.produto.ProdutoResponsePaginadoDTO;
+import com.cassi.desafiocassi.dto.produto.*;
 import com.cassi.desafiocassi.h2.entity.Categoria;
 import com.cassi.desafiocassi.h2.entity.Produto;
 import com.cassi.desafiocassi.h2.repository.CategoriaRepository;
@@ -93,7 +90,7 @@ public class ProdutoResourceTest {
 
         Response response = given()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(new ProdutoRequestDTO())
+                .body(new ProdutoCadastroRequestDTO())
                 .when()
                 .post("/produtos")
                 .then()
@@ -108,8 +105,6 @@ public class ProdutoResourceTest {
     @Test
     void listarProdutosSucesso() {
         String nomeProduto = "Produto";
-        String descricao = "Descrição";
-        String nomeCategoria = "Categoria";
         int numeroPagina = 0;
         int tamanhoPagina = 5;
         String sortBy = "precoBase";
@@ -216,7 +211,7 @@ public class ProdutoResourceTest {
         given()
                 .pathParam("idProduto", idProduto)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(gerarProdutoRequest())
+                .body(gerarProdutoAtualizacaoRequest())
                 .when()
                 .put("/produtos/{idProduto}")
                 .then()
@@ -233,7 +228,7 @@ public class ProdutoResourceTest {
         Response response = given()
                 .pathParam("idProduto", idProduto)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(gerarProdutoRequest())
+                .body(gerarProdutoAtualizacaoRequest())
                 .when()
                 .put("/produtos/{idProduto}")
                 .then()
@@ -257,7 +252,7 @@ public class ProdutoResourceTest {
         Response response = given()
                 .pathParam("idProduto", idProduto)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .body(gerarProdutoRequest())
+                .body(gerarProdutoAtualizacaoRequest())
                 .when()
                 .put("/produtos/{idProduto}")
                 .then()
@@ -439,8 +434,18 @@ public class ProdutoResourceTest {
                 .build();
     }
 
-    private ProdutoRequestDTO gerarProdutoRequest() {
-        return ProdutoRequestDTO.builder()
+    private ProdutoCadastroRequestDTO gerarProdutoRequest() {
+        return ProdutoCadastroRequestDTO.builder()
+                .nomeProduto("nome do produto Request")
+                .descricaoProduto("descrição Resquest")
+                .nomeCategoria("categoria Request")
+                .precoBase(BigDecimal.valueOf(152.0))
+                .precoBase(new BigDecimal(20))
+                .build();
+    }
+
+    private ProdutoAtualizacaoRequestDTO gerarProdutoAtualizacaoRequest() {
+        return ProdutoAtualizacaoRequestDTO.builder()
                 .nomeProduto("nome do produto Request")
                 .descricaoProduto("descrição Resquest")
                 .nomeCategoria("categoria Request")

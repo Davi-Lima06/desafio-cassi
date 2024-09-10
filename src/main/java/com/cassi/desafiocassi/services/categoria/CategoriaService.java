@@ -3,7 +3,8 @@ package com.cassi.desafiocassi.services.categoria;
 import com.cassi.desafiocassi.configuration.exceptions.DataIntegrityException;
 import com.cassi.desafiocassi.configuration.exceptions.GenericException;
 import com.cassi.desafiocassi.configuration.exceptions.ObjectNotFoundException;
-import com.cassi.desafiocassi.dto.categoria.CategoriaRequestDTO;
+import com.cassi.desafiocassi.dto.categoria.CategoriaAtualizacaoRequestDTO;
+import com.cassi.desafiocassi.dto.categoria.CategoriaCadastroRequestDTO;
 import com.cassi.desafiocassi.dto.categoria.CategoriaResponseDTO;
 import com.cassi.desafiocassi.h2.entity.Categoria;
 import com.cassi.desafiocassi.h2.repository.CategoriaRepository;
@@ -30,15 +31,15 @@ public class CategoriaService {
 
     /**
      * cadastra uma categoria no banco de dados e trata as exceções
-     * @param categoriaRequestDto dto de request
+     * @param categoriaCadastroRequestDto dto de request
      * @return mensagem de sucesso
      */
-    public String cadastrarCategoria(CategoriaRequestDTO categoriaRequestDto) {
-        validarDuplicidadeCategoria(categoriaRequestDto.getNomeCategoria());
-        validarDescontoOuTaxa(categoriaRequestDto);
+    public String cadastrarCategoria(CategoriaCadastroRequestDTO categoriaCadastroRequestDto) {
+        validarDuplicidadeCategoria(categoriaCadastroRequestDto.getNomeCategoria());
+        validarDescontoOuTaxa(categoriaCadastroRequestDto.getDesconto(), categoriaCadastroRequestDto.getTaxa());
+        Categoria categoria = categoriaMapper.converterDtoParaEntidade(categoriaCadastroRequestDto);
 
         try {
-            Categoria categoria = categoriaMapper.converterDtoParaEntidade(categoriaRequestDto);
             categoriaRepository.save(categoria);
             return categoria.getNomeCategoria();
         } catch (Exception ex) {
@@ -79,13 +80,13 @@ public class CategoriaService {
      * @param categoriaRequestDto dto response
      * @return mensagem de sucesso
      */
-    public String atualizarCategoriaPorNomeCategoria(String nomeCategoria, CategoriaRequestDTO categoriaRequestDto) {
+    public String atualizarCategoriaPorNomeCategoria(String nomeCategoria, CategoriaAtualizacaoRequestDTO categoriaRequestDto) {
         Categoria categoria = buscarCategoriaPorNome(nomeCategoria);
 
         validarDuplicidadeCategoria(categoriaRequestDto.getNomeCategoria());
-        validarDescontoOuTaxa(categoriaRequestDto);
+        validarDescontoOuTaxa(categoriaRequestDto.getDesconto(), categoriaRequestDto.getTaxa());
+        Categoria categoriaAtualizada = categoriaMapper.atualizarCategoriaMapper(categoria, categoriaRequestDto);
         try {
-            Categoria categoriaAtualizada = categoriaMapper.atualizarCategoriaMapper(categoria, categoriaRequestDto);
             categoriaRepository.save(categoriaAtualizada);
             return ATUALIZACAO_CATEGORIA.getMensagem();
         } catch (Exception ex) {
@@ -121,11 +122,15 @@ public class CategoriaService {
 
     /**
      * valida se os campos de desconto e taxa foram preenchidos, caso forem o sistema lança um erro
-     * @param categoriaRequestDto
+     * @param desconto
+     * @param taxa
      */
-    private void validarDescontoOuTaxa(CategoriaRequestDTO categoriaRequestDto) {
-        if (categoriaRequestDto.getDesconto().compareTo(BigDecimal.ZERO) != 0 &&
-                categoriaRequestDto.getTaxa().compareTo(BigDecimal.ZERO) != 0) {
+    private void validarDescontoOuTaxa(BigDecimal desconto, BigDecimal taxa) {
+        if (desconto == null || taxa == null) {
+            return;
+        }
+        if (desconto.compareTo(BigDecimal.ZERO) != 0 &&
+                taxa.compareTo(BigDecimal.ZERO) != 0) {
             throw new GenericException("não é possível cadastrar desconto e taxa para a mesma categoria!");
         }
     }

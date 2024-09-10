@@ -1,7 +1,8 @@
-package com.cassi.desafiocassi.resouces;
+package com.cassi.desafiocassi.testcontroller;
 
 import com.cassi.desafiocassi.configuration.exceptions.DataIntegrityException;
-import com.cassi.desafiocassi.dto.categoria.CategoriaRequestDTO;
+import com.cassi.desafiocassi.dto.categoria.CategoriaAtualizacaoRequestDTO;
+import com.cassi.desafiocassi.dto.categoria.CategoriaCadastroRequestDTO;
 import com.cassi.desafiocassi.dto.categoria.CategoriaResponseDTO;
 import com.cassi.desafiocassi.h2.entity.Categoria;
 import com.cassi.desafiocassi.h2.repository.CategoriaRepository;
@@ -188,7 +189,7 @@ public class CategoriaServiceResouceTest {
     @Test
     void atualizarCategoriaPorNomeCategoriaSucesso() {
         Categoria categoria = gerarCategoria();
-        CategoriaRequestDTO categoriaRequest = gerarCategoriaRequestDto();
+        CategoriaAtualizacaoRequestDTO categoriaRequest = gerarCategoriaAtualizacaoRequestDto();
         categoriaRequest.setNomeCategoria("Outro nome");
         when(categoriaRepository.findByNomeCategoria("nome")).thenReturn(Optional.ofNullable(categoria));
         when(categoriaRepository.save(any())).thenReturn(new Categoria());
@@ -206,7 +207,7 @@ public class CategoriaServiceResouceTest {
 
     @Test
     void atualizarCategoriaPorNomeCategoriaNaoEncontrado() {
-        CategoriaRequestDTO categoriaRequest = gerarCategoriaRequestDto();
+        CategoriaAtualizacaoRequestDTO categoriaRequest = gerarCategoriaAtualizacaoRequestDto();
         when(categoriaRepository.findByNomeCategoria("nome")).thenReturn(Optional.ofNullable(null));
 
         Response response = given()
@@ -227,7 +228,7 @@ public class CategoriaServiceResouceTest {
 
     @Test
     void atualizarCategoriaPorNomeCategoriaErroException() {
-        CategoriaRequestDTO categoriaRequest = gerarCategoriaRequestDto();
+        CategoriaAtualizacaoRequestDTO categoriaRequest = gerarCategoriaAtualizacaoRequestDto();
         when(categoriaRepository.save(any())).thenThrow(new DataIntegrityException(""));
         when(categoriaRepository.findByNomeCategoria("nome")).thenReturn(Optional.ofNullable(gerarCategoria()));
 
@@ -313,8 +314,17 @@ public class CategoriaServiceResouceTest {
                 .build();
     }
 
-    private CategoriaRequestDTO gerarCategoriaRequestDto() {
-        return CategoriaRequestDTO.builder()
+    private CategoriaCadastroRequestDTO gerarCategoriaRequestDto() {
+        return CategoriaCadastroRequestDTO.builder()
+                .desconto(new BigDecimal(10))
+                .taxa(new BigDecimal(0))
+                .descricaoCategoria("descrição categoria Request")
+                .nomeCategoria("nome categoria Request")
+                .build();
+    }
+
+    private CategoriaAtualizacaoRequestDTO gerarCategoriaAtualizacaoRequestDto() {
+        return CategoriaAtualizacaoRequestDTO.builder()
                 .desconto(new BigDecimal(10))
                 .taxa(new BigDecimal(0))
                 .descricaoCategoria("descrição categoria Request")

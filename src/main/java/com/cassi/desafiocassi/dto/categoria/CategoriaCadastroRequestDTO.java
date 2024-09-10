@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CategoriaRequestDTO {
+public class CategoriaCadastroRequestDTO {
     @NotBlank(message = "nome da categoria é obrigatório!")
     private String nomeCategoria;
     @NotBlank(message = "descrição da categoria é obrigatório!")

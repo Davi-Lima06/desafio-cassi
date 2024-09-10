@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProdutoRequestDTO {
+public class ProdutoCadastroRequestDTO {
     @NotBlank(message = "nome do produto é obrigatório!")
     private String nomeProduto;
     @NotBlank(message = "preço base é obrigatório!")
